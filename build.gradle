@@ -1,0 +1,42 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+          url "${beiartf_url}"
+          credentials(AwsCredentials) {
+            accessKey = "$System.env.BEIARTF_ACCESS_KEY_ID"
+            secretKey = "$System.env.BEIARTF_SECRET_ACCESS_KEY"
+            sessionToken = "$System.env.BEIARTF_SESSION_TOKEN"
+          }
+        }
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        classpath "com.traveloka.common.gradle:java-base-plugin:4.16.0"
+    }
+}
+
+apply plugin: "com.traveloka.gradle.traveloka-root"
+
+wrapper {
+    gradleVersion = '4.10.2'
+    distributionType = "bin"
+}
+
+subprojects {
+    repositories {
+        maven {
+          url "${beiartf_url}"
+          credentials(AwsCredentials) {
+            accessKey = "$System.env.BEIARTF_ACCESS_KEY_ID"
+            secretKey = "$System.env.BEIARTF_SECRET_ACCESS_KEY"
+            sessionToken = "$System.env.BEIARTF_SESSION_TOKEN"
+          }
+        }
+        jcenter()
+        mavenLocal()
+    }
+}
