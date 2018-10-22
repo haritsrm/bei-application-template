@@ -21,15 +21,10 @@ node("aws-ecs") {
       }
 
       stage("publish") {
-        withCredentials([
-          [
-            $class           : 'AmazonWebServicesCredentialsBinding',
-            accessKeyVariable: "AWS_ACCESS_KEY_ID",
-            credentialsId    : 'tvlk-dev-user-jenkins',
-            secretKeyVariable: "AWS_SECRET_ACCESS_KEY"
-          ]
-        ]) {
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'tvlk-dev-user-jenkins', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           BeiartfUtil.assumeRole(this)
+        }
+        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'traveloka-builds-credential-s3', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           sh "GIT_INPUT_REFERENCE=$GIT_REF FORCE_RELEASE=$FORCE_RELEASE ./build.sh"
         }
       }
