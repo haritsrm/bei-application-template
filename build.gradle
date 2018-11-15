@@ -15,11 +15,11 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath "com.traveloka.common.gradle:java-base-plugin:4.16.0"
+        classpath "com.traveloka.common.gradle:java-base-plugin:5.1.2"
     }
 }
 
-apply plugin: "com.traveloka.gradle.traveloka-root"
+apply plugin: "com.traveloka.common.gradle.base-root"
 
 wrapper {
     gradleVersion = '4.10.2'

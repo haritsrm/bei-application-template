@@ -1,5 +1,6 @@
 # bei-application-template
-A repository template to be copy-pasted as the skeleton of new backend repositories. You may want to visit [the implementation branch](/../../tree/implementation) to see this template in action
+
+A repository template to be copy-pasted as the skeleton of new backend repositories. Please see [the implementation branch](/../../tree/implementation) to see this template in action
 
 Before you start [developing real backend repositories in GitHub](https://29022131.atlassian.net/wiki/spaces/BEI/pages/744391117/), read [the new git workflow](https://29022131.atlassian.net/wiki/spaces/BEI/pages/736529181/). Use [the playground repository](https://github.com/traveloka/bei-application-experiment/) to try this new workflow.
 
