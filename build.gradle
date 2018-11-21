@@ -15,7 +15,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath "com.traveloka.common.gradle:java-base-plugin:5.1.2"
+        classpath "com.traveloka.common.gradle:java-base-plugin:5.1.4"
     }
 }
 
