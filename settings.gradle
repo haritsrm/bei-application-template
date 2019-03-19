@@ -1,7 +1,5 @@
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
 rootProject.name = "com.traveloka.common.backend.template"
-enableFeaturePreview('STABLE_PUBLISHING')
-enableFeaturePreview('IMPROVED_POM_SUPPORT')
 
 def includeSubdirectories() {
     def currentDir = rootProject.projectDir;
