@@ -1,5 +1,5 @@
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
-rootProject.name = "com.traveloka.common.backend.template"
+rootProject.name = "bei-application-template"
 
 def includeSubdirectories() {
     def currentDir = rootProject.projectDir;

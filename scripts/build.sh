@@ -1,19 +1,15 @@
 #!/bin/bash
-set -evo pipefail
+set -eo pipefail
 CURRENT_DIR="$(dirname "$0")"
 . ${CURRENT_DIR}/init_git.sh
+
 if [ -n "${CI_NAME}" ]; then
     . ${CURRENT_DIR}/init_${CI_NAME}.sh
-    ./gradlew build
+    echo "${BUILD_COMMAND}"
+    eval "${BUILD_COMMAND}"
+    echo "${SONAR_COMMAND}"
+    eval "${SONAR_COMMAND} -Dsonar.login=${SONARCLOUD_TOKEN}"
 else
     # local build
-    ./gradlew build --write-locks
-fi
-
-
-if [[ ${DETECTED_VERSION} =~ ${VERSION_PATTERN} ]]; then
-    ./gradlew publishMavenJavaPublicationToMavenRepository -Pversion=${DETECTED_VERSION:1}
-fi
-if [[ ${FORCE_RELEASE} == "true" ]] || [[ ${GIT_INPUT_REFERENCE} =~ ${RELEASE_BRANCH_PATTERN} ]]; then
-    ./gradlew uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)
+    ./gradlew build --write-locks --no-build-cache
 fi
