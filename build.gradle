@@ -21,7 +21,7 @@ apply plugin: "com.traveloka.common.gradle.base-root"
 
 wrapper {
     gradleVersion = '5.5.1'
-    distributionType = "bin"
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 subprojects {
