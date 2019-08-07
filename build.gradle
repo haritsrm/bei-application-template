@@ -12,7 +12,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath "com.traveloka.common.gradle:java-base-plugin:6.0.3"
+        classpath "com.traveloka.common.gradle:java-base-plugin:6.0.5"
     }
 }
 
@@ -20,7 +20,7 @@ group "com.traveloka.common"
 apply plugin: "com.traveloka.common.gradle.base-root"
 
 wrapper {
-    gradleVersion = '5.4.1'
+    gradleVersion = '5.5.1'
     distributionType = "bin"
 }
 

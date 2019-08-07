@@ -1,5 +1,6 @@
 #!/bin/bash
 set -eo pipefail
+. ${CURRENT_DIR}/init_git.sh
 
 IS_BRANCH_TRIGGER=false
 IS_TAG_TRIGGER=false

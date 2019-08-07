@@ -1,7 +1,6 @@
 #!/bin/bash
 set -eo pipefail
 CURRENT_DIR="$(dirname "$0")"
-. ${CURRENT_DIR}/init_git.sh
 
 if [ -n "${CI_NAME}" ]; then
     . ${CURRENT_DIR}/init_${CI_NAME}.sh
@@ -11,5 +10,7 @@ if [ -n "${CI_NAME}" ]; then
     eval "${SONAR_COMMAND} -Dsonar.login=${SONARCLOUD_TOKEN}"
 else
     # local build
-    ./gradlew build --write-locks --no-build-cache
+    BUILD_COMMAND="./gradlew build --write-locks --no-build-cache"
+    echo "${BUILD_COMMAND}"
+    eval "${BUILD_COMMAND}"
 fi
