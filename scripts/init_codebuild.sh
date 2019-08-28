@@ -39,7 +39,11 @@ function send_build_notification () {
 BUILD_COMMAND="./gradlew smallTest smallJacocoReport"
 # https://docs.gradle.org/5.4.1/dsl/org.gradle.api.plugins.quality.Checkstyle.html#org.gradle.api.plugins.quality.Checkstyle:source
 SONAR_COMMAND="./gradlew check sonarqube --no-build-cache"
-if [ "${IS_BRANCH_TRIGGER}" = true ]; then
+if [[ ${FORCE_RELEASE} == "true" ]] || [[ ${CODEBUILD_SOURCE_VERSION} =~ ${RELEASE_BRANCH_PATTERN} ]] || ([ "${IS_BRANCH_TRIGGER}" = true ] && [[ ${CODEBUILD_WEBHOOK_TRIGGER:7} =~ ${RELEASE_BRANCH_PATTERN} ]]); then
+    BUILD_COMMAND="${BUILD_COMMAND} uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
+    SONAR_COMMAND="${SONAR_COMMAND} -Pversion=$(git rev-parse --short HEAD)"
+    BUILD_SUCCESS_MESSAGE="services version $(git rev-parse --short HEAD) are released"
+elif [ "${IS_BRANCH_TRIGGER}" = true ]; then
     SONAR_COMMAND="${SONAR_COMMAND} -Dsonar.branch.name=${CODEBUILD_WEBHOOK_HEAD_REF:11}"
 elif [ "${IS_PR_TRIGGER}" = true ]; then
     SONAR_COMMAND="${SONAR_COMMAND} -Dsonar.pullrequest.key=${CODEBUILD_WEBHOOK_TRIGGER:3} -Dsonar.pullrequest.branch=${CODEBUILD_WEBHOOK_HEAD_REF:11} -Dsonar.pullrequest.base=${CODEBUILD_WEBHOOK_BASE_REF:11}"
@@ -47,10 +51,6 @@ elif [[ ${CODEBUILD_SOURCE_VERSION} =~ ${VERSION_PATTERN} ]]|| ([ "${IS_TAG_TRIG
     BUILD_COMMAND="${BUILD_COMMAND} publishMavenJavaPublicationToMavenRepository -Pversion=${DETECTED_VERSION:1}"
     SONAR_COMMAND="${SONAR_COMMAND} -Pversion=${DETECTED_VERSION:1}"
     BUILD_SUCCESS_MESSAGE="libraries ${DETECTED_VERSION} are published"
-elif [[ ${FORCE_RELEASE} == "true" ]] || [[ ${CODEBUILD_SOURCE_VERSION} =~ ${RELEASE_BRANCH_PATTERN} ]] || ([ "${IS_BRANCH_TRIGGER}" = true ] && [[ ${CODEBUILD_WEBHOOK_TRIGGER:7} =~ ${RELEASE_BRANCH_PATTERN} ]]); then
-    BUILD_COMMAND="${BUILD_COMMAND} uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
-    SONAR_COMMAND="${SONAR_COMMAND} -Pversion=$(git rev-parse --short HEAD)"
-    BUILD_SUCCESS_MESSAGE="services version $(git rev-parse --short HEAD) are released"
 else
     SONAR_COMMAND="${SONAR_COMMAND} -Pversion=$(git rev-parse --short HEAD)"
 fi
