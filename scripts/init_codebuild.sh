@@ -11,12 +11,16 @@ if [ "${CODEBUILD_SOURCE_VERSION}" != "${CODEBUILD_RESOLVED_SOURCE_VERSION}" ]; 
     BUILD_NOTIFICATION_SOURCE="${BUILD_NOTIFICATION_SOURCE}:${CODEBUILD_RESOLVED_SOURCE_VERSION}"
 fi
 
+GIT_INPUT_REFERENCE="${CODEBUILD_SOURCE_VERSION}"
+
 if [ -n "${CODEBUILD_WEBHOOK_TRIGGER}" ]; then # webhook-triggered build
     BUILD_NOTIFICATION_SOURCE="${CODEBUILD_WEBHOOK_TRIGGER}:${CODEBUILD_RESOLVED_SOURCE_VERSION}"
     if [[ ${CODEBUILD_WEBHOOK_TRIGGER} == branch/* ]]; then
         IS_BRANCH_TRIGGER=true
+        GIT_INPUT_REFERENCE="${CODEBUILD_WEBHOOK_TRIGGER:7}"
     elif [[ ${CODEBUILD_WEBHOOK_TRIGGER} == tag/* ]]; then
         IS_TAG_TRIGGER=true
+        GIT_INPUT_REFERENCE="${CODEBUILD_WEBHOOK_TRIGGER:4}"
     elif [[ ${CODEBUILD_WEBHOOK_TRIGGER} == pr/* ]]; then
         IS_PR_TRIGGER=true
     fi
@@ -39,10 +43,17 @@ function send_build_notification () {
 BUILD_COMMAND="./gradlew smallTest smallJacocoReport"
 # https://docs.gradle.org/5.4.1/dsl/org.gradle.api.plugins.quality.Checkstyle.html#org.gradle.api.plugins.quality.Checkstyle:source
 SONAR_COMMAND="./gradlew check sonarqube --no-build-cache"
-if [[ ${FORCE_RELEASE} == "true" ]] || [[ ${CODEBUILD_SOURCE_VERSION} =~ ${RELEASE_BRANCH_PATTERN} ]] || ([ "${IS_BRANCH_TRIGGER}" = true ] && [[ ${CODEBUILD_WEBHOOK_TRIGGER:7} =~ ${RELEASE_BRANCH_PATTERN} ]]); then
-    BUILD_COMMAND="${BUILD_COMMAND} uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
-    SONAR_COMMAND="${SONAR_COMMAND} -Pversion=$(git rev-parse --short HEAD)"
-    BUILD_SUCCESS_MESSAGE="services version $(git rev-parse --short HEAD) are released"
+if [[ ${FORCE_RELEASE} == "true" ]] || [[ ${GIT_INPUT_REFERENCE} =~ ${RELEASE_BRANCH_PATTERN} ]] || [[ ${GIT_INPUT_REFERENCE} =~ ${RELEASE_BRANCH_TARGETED_PATTERN} ]]; then
+    . ${CURRENT_DIR}/targeted_build.sh
+    if [ -n "${SERVICE_MODULE_NAME}" ]; then
+      BUILD_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:compileJava :${SERVICE_MODULE_NAME}:uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
+      SONAR_COMMAND=""
+      BUILD_SUCCESS_MESSAGE="service ${SERVICE_NAME} version $(git rev-parse --short HEAD) are released"
+    else
+      BUILD_COMMAND="${BUILD_COMMAND} uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
+      SONAR_COMMAND="${SONAR_COMMAND} -Pversion=$(git rev-parse --short HEAD)"
+      BUILD_SUCCESS_MESSAGE="services version $(git rev-parse --short HEAD) are released"
+    fi
 elif [ "${IS_BRANCH_TRIGGER}" = true ]; then
     SONAR_COMMAND="${SONAR_COMMAND} -Dsonar.branch.name=${CODEBUILD_WEBHOOK_HEAD_REF:11}"
 elif [ "${IS_PR_TRIGGER}" = true ]; then
