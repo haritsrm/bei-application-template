@@ -46,11 +46,13 @@ SONAR_COMMAND="./gradlew check sonarqube --no-build-cache"
 if [[ ${FORCE_RELEASE} == "true" ]] || [[ ${GIT_INPUT_REFERENCE} =~ ${RELEASE_BRANCH_PATTERN} ]] || [[ ${GIT_INPUT_REFERENCE} =~ ${RELEASE_BRANCH_TARGETED_PATTERN} ]]; then
     . ${CURRENT_DIR}/targeted_build.sh
     if [ -n "${SERVICE_MODULE_NAME}" ]; then
-      BUILD_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:compileJava :${SERVICE_MODULE_NAME}:uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
+      BUILD_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:build"
+      RELEASE_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD) -Daws.profile=\"default\""
       SONAR_COMMAND=""
       BUILD_SUCCESS_MESSAGE="service ${SERVICE_NAME} version $(git rev-parse --short HEAD) are released"
     else
-      BUILD_COMMAND="${BUILD_COMMAND} uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD)"
+      BUILD_COMMAND="${BUILD_COMMAND} build"
+      RELEASE_COMMAND="./gradlew uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD) -Daws.profile=\"default\""
       SONAR_COMMAND="${SONAR_COMMAND} -Pversion=$(git rev-parse --short HEAD)"
       BUILD_SUCCESS_MESSAGE="services version $(git rev-parse --short HEAD) are released"
     fi

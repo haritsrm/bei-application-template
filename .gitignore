@@ -6,3 +6,4 @@
 *.pyc
 build/
 generated-src/
+out/
