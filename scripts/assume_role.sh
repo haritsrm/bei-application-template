@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
+role_arn="arn:aws:iam::517530806209:role/beiartf-reader-ff59caa9b4b093d9"
+
 # parse command line
 while [ "$#" -gt 0 ]; do
     case "$1" in

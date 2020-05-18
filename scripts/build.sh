@@ -18,8 +18,17 @@ if [ -n "${CI_NAME}" ]; then
 else
     # local build
     BUILD_COMMAND="./gradlew build --write-locks --no-build-cache"
+
+    # parse command line
+    while [ "$#" -gt 0 ]; do
+        case "$1" in
+            -p) profile="$2"; shift 2;;
+        esac
+    done
+
     # run saml of your choice first
-    . ${CURRENT_DIR}/assume_role.sh -p saml -r arn:aws:iam::517530806209:role/beiartf-reader-ff59caa9b4b093d9
+    # the next line runs the assume_role, only supplying the -p parameter if it is provided to the build.sh, for example ./scripts/build.sh -p saml
+    . ${CURRENT_DIR}/assume_role.sh ${profile:+-p $profile}
     echo "${BUILD_COMMAND}"
     eval "${BUILD_COMMAND}"
 fi
