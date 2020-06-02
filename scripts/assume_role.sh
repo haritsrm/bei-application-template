@@ -13,6 +13,7 @@ done
 
 response=$(aws ${profile:+--profile $profile} \
                sts assume-role --output text \
+               --region ap-southeast-1 \
                --role-arn "$role_arn" \
                --role-session-name="beiartfRole" \
                --query Credentials)

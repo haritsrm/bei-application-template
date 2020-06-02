@@ -4,7 +4,6 @@ CURRENT_DIR="$(dirname "$0")"
 
 if [ -n "${CI_NAME}" ]; then
     . ${CURRENT_DIR}/init_${CI_NAME}.sh
-    . ${CURRENT_DIR}/assume_role.sh -r arn:aws:iam::517530806209:role/BeiartfWriter_bei      # move this to the prebuild step
     echo "${BUILD_COMMAND}"
     eval "${BUILD_COMMAND}"
     if [[ -n "${RELEASE_COMMAND}" ]]; then
