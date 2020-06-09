@@ -1,0 +1,2 @@
+// This gradle sub-project is created only for testing purpose,
+// i.e. to check whether this repo is buildable by CI

@@ -1,6 +1,10 @@
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
 rootProject.name = "bei-application-template"
 
+// as we're locking all configurations, it's better to have just 1 lock file
+// this will be the default in gradle 7.0
+enableFeaturePreview("ONE_LOCKFILE_PER_PROJECT")
+
 def includeSubdirectories() {
     def currentDir = rootProject.projectDir;
     currentDir.eachDir { subDir ->

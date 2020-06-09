@@ -1,37 +1,62 @@
 buildscript {
     repositories {
         maven {
-          url "${beiartf_url}"
-          authentication {
-            awsIm(AwsImAuthentication)
-          }
+            url "${beiartf_url}"
+            authentication {
+                awsIm(AwsImAuthentication)
+            }
         }
         jcenter()
         mavenLocal()
     }
+
     dependencies {
-        classpath "com.traveloka.common.gradle:java-base-plugin:6.0.5"
+        classpath "com.traveloka.common.gradle:java-base-plugin:7.0.0"
     }
 }
 
-group "com.traveloka.common"
+group "com.traveloka.<YOUR_MAVEN_SUBDOMAIN>"
 apply plugin: "com.traveloka.common.gradle.base-root"
 
 wrapper {
-    gradleVersion = '5.5.1'
-    distributionType = Wrapper.DistributionType.BIN
+    gradleVersion = "6.5"
+    distributionType = "bin"
 }
 
 subprojects {
     group "com.traveloka.common"
+    apply plugin: "com.traveloka.common.gradle.base-module"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     repositories {
         maven {
-          url "${beiartf_url}"
-          authentication {
-            awsIm(AwsImAuthentication)
-          }
+            url "${beiartf_url}"
+            authentication {
+                awsIm(AwsImAuthentication)
+            }
+        }
+        maven {
+            url "https://maven-central-asia.storage-download.googleapis.com/repos/central/data"
         }
         jcenter()
         mavenLocal()
+    }
+
+    checkstyle {
+        toolVersion "8.32"
+        configFile rootProject.file("gradle/config/checkstyle.xml")
+        configProperties = [
+            "baseDir": projectDir
+        ]
+    }
+
+    task resolveAndLockAll {
+        doLast {
+            configurations.findAll {
+                it.canBeResolved
+            }.each { it.resolve() }
+        }
     }
 }
