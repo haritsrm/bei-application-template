@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
-role_arn="arn:aws:iam::517530806209:role/beiartf-reader-ff59caa9b4b093d9"
+role_arn="arn:aws:iam::015110552125:role/BeiartfReader"
 
 # parse command line
 while [ "$#" -gt 0 ]; do
