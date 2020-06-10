@@ -1,14 +1,11 @@
-apply plugin: "java-library"
-apply plugin: "maven-publish"
+apply plugin: "com.traveloka.common.gradle.base-library"
 
 publishing {
     repositories {
         maven {
             url "${beiartf_url}"
-            credentials(AwsCredentials) {
-                accessKey = "$System.env.BEIARTF_ACCESS_KEY_ID"
-                secretKey = "$System.env.BEIARTF_SECRET_ACCESS_KEY"
-                sessionToken = "$System.env.BEIARTF_SESSION_TOKEN"
+            authentication {
+                awsIm(AwsImAuthentication)
             }
         }
     }
