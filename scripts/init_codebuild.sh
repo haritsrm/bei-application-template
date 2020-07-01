@@ -50,13 +50,14 @@ if [[ ${FORCE_RELEASE} == "true" ]] || [[ ${GIT_INPUT_REFERENCE} =~ ${RELEASE_BR
     . ${CURRENT_DIR}/targeted_build.sh
     if [ -n "${SERVICE_MODULE_NAME}" ]; then
         # partial release
-        BUILD_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:build"
+        BUILD_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:build distTar"
         RELEASE_COMMAND="./gradlew :${SERVICE_MODULE_NAME}:uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD) -Daws.profile=\"default\""
         SONAR_TASK=""
         BUILD_SUCCESS_MESSAGE="service ${SERVICE_NAME} version $(git rev-parse --short HEAD) are released"
     else
         # full release
-        BUILD_COMMAND="${BUILD_COMMAND} -Pversion=$(git rev-parse --short HEAD) -Daws.profile=\"default\""
+        BUILD_COMMAND="${BUILD_COMMAND} distTar"
+        RELEASE_COMMAND="./gradlew uploadAmiBakingManifest -Pversion=$(git rev-parse --short HEAD) -Daws.profile=\"default\""
         BUILD_SUCCESS_MESSAGE="services version $(git rev-parse --short HEAD) are released"
     fi
 elif [ "${IS_BRANCH_TRIGGER}" = true ]; then
