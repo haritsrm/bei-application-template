@@ -24,7 +24,7 @@ response=$(aws ${profile:+--profile $profile} \
                sts assume-role --output text \
                --region ap-southeast-1 \
                --role-arn "$role_arn" \
-               --role-session-name="beiartfRole" \
+               --role-session-name="$session_name" \             
                --query Credentials)
 
 AWS_ACCESS_KEY_ID=$(echo $response | awk '{print $1}')
