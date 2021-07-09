@@ -1,27 +1,26 @@
 buildscript {
-  repositories {
-    maven {
-      url "${external_cache_codeartifact_url}"
-      credentials {
-        username "aws"
-        password "${external_cache_codeartifact_token}"
-      }
-      content {
-        excludeGroupByRegex "com\\.traveloka.*"
-      }
-    }
+    repositories {
+        maven {
+            url "${external_cache_codeartifact_url}"
+            credentials {
+                username "aws"
+                password "${external_cache_codeartifact_token}"
+            }
+            content {
+                excludeGroupByRegex "com\\.traveloka.*"
+            }
+        }
 
-    maven {
-      url "${beiartf_url}"
-      authentication {
-        awsIm(AwsImAuthentication)
-      }
+        maven {
+            url "${beiartf_url}"
+            authentication {
+                awsIm(AwsImAuthentication)
+            }
+        }
     }
-
     dependencies {
         classpath "com.traveloka.common.gradle:java-base-plugin:7.2.12"
     }
-  }
 }
 
 group "com.traveloka.<YOUR_MAVEN_SUBDOMAIN>"
