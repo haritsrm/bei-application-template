@@ -1,25 +1,34 @@
 buildscript {
-    repositories {
-        maven {
-            url "${beiartf_url}"
-            authentication {
-                awsIm(AwsImAuthentication)
-            }
-        }
-        jcenter()
-        mavenLocal()
+  repositories {
+    maven {
+      url "${external_cache_codeartifact_url}"
+      credentials {
+        username "aws"
+        password "${external_cache_codeartifact_token}"
+      }
+      content {
+        excludeGroupByRegex "com\\.traveloka.*"
+      }
+    }
+
+    maven {
+      url "${beiartf_url}"
+      authentication {
+        awsIm(AwsImAuthentication)
+      }
     }
 
     dependencies {
-        classpath "com.traveloka.common.gradle:java-base-plugin:7.0.0"
+        classpath "com.traveloka.common.gradle:java-base-plugin:7.2.12"
     }
+  }
 }
 
 group "com.traveloka.<YOUR_MAVEN_SUBDOMAIN>"
 apply plugin: "com.traveloka.common.gradle.base-root"
 
 wrapper {
-    gradleVersion = "6.5"
+    gradleVersion = "7.1.1"
     distributionType = "bin"
 }
 
@@ -31,6 +40,19 @@ subprojects {
     targetCompatibility = 1.8
 
     repositories {
+        // public libraries
+        maven {
+            url "${external_cache_codeartifact_url}"
+            credentials {
+                username "aws"
+                password "${external_cache_codeartifact_token}"
+            }
+            content {
+                excludeGroupByRegex "com\\.traveloka.*"
+            }
+        }
+
+        // private libraries
         maven {
             url "${beiartf_url}"
             authentication {
@@ -52,7 +74,7 @@ subprojects {
         ]
     }
 
-    task resolveAndLockAll {
+    task resolveAllDependencies {
         doLast {
             configurations.findAll {
                 it.canBeResolved
