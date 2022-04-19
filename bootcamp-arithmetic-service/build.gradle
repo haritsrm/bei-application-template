@@ -1,0 +1,32 @@
+apply plugin: "com.traveloka.common.gradle.base-application"
+
+mainClassName = "com.traveloka.bootcamp.arithmetic.ArithmeticServiceApplication"
+applicationName = "beiarth"
+
+travelokaApplication {
+    productDomain = "bei"
+    s3BinaryBucket = "ebi-appbin-275451288552-d7be68b27b93c6ed" // any bucket values are actually okay, because we are not actually publishing
+    s3BinaryKey = "${applicationName}/${project.version}.tgz"
+    s3PlaybookBucket = "ebi-appbin-275451288552-d7be68b27b93c6ed" // any bucket values are actually okay, because we are not actually publishing
+    s3PlaybookKey = "${applicationName}/playbook.zip"
+}
+
+dependencies {
+    implementation project(":bootcamp-addition-api")
+    implementation project(":bootcamp-addition-impl")
+    implementation project(":bootcamp-subtraction-api")
+    implementation project(":bootcamp-subtraction-impl")
+
+    implementation "org.slf4j:slf4j-api:1.7.25"
+
+    implementation "com.traveloka.common:concurrent:11.0.38"
+    implementation "com.traveloka.common:online-monitor:11.0.38"
+    implementation "com.traveloka.common:rpc:11.0.38"
+    implementation "com.traveloka.common:lifecycle:11.0.38"
+    implementation "com.traveloka.common:application-base:11.0.38"
+    implementation "com.traveloka.common:application-jetty:11.0.38"
+    implementation "com.traveloka.common:statsd:11.0.38"
+
+    annotationProcessor "com.traveloka.common:application-jetty-ap:11.0.38"
+    annotationProcessor "com.traveloka.common:lifecycle-ap:11.0.38"
+}

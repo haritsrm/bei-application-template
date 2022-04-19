@@ -15,4 +15,8 @@ include 'bootcamp-addition-api:bootcamp-addition-impl'
 findProject(':bootcamp-addition-api:bootcamp-addition-impl')?.name = 'bootcamp-addition-impl'
 include 'bootcamp-addition-impl'
 include 'bootcamp-addition-rpc'
+include 'bootcamp-substraction-api'
+include 'bootcamp-substraction-impl'
+include 'bootcamp-subtraction-rpc'
+include 'bootcamp-arithmetic-service'
 

@@ -1,0 +1,13 @@
+apply plugin: "com.traveloka.common.gradle.base-library"
+apply from: "$rootDir/gradle/publishing.gradle"
+
+dependencies {
+    api project(":bootcamp-subtraction-api")
+    implementation "com.traveloka.common:concurrent:11.0.38"
+    implementation "com.traveloka.common:http-client:11.0.38"
+    implementation "com.traveloka.common:lifecycle:11.0.38"
+    implementation "com.traveloka.common:online-monitor:11.0.38"
+    implementation "com.traveloka.common:rpc:11.0.38"
+
+    annotationProcessor "com.traveloka.common:lifecycle-ap:11.0.38"
+}
