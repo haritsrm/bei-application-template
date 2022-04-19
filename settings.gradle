@@ -14,4 +14,5 @@ include 'bootcamp-addition-api'
 include 'bootcamp-addition-api:bootcamp-addition-impl'
 findProject(':bootcamp-addition-api:bootcamp-addition-impl')?.name = 'bootcamp-addition-impl'
 include 'bootcamp-addition-impl'
+include 'bootcamp-addition-rpc'
 

@@ -36,4 +36,4 @@ CODEARTIFACT_AUTH_TOKEN=$(aws --region ap-southeast-1 --profile beiartf codearti
 
 # insert / update codeartifact token in the machine's gradle.properties
 touch ~/.gradle/gradle.properties
-grep -q "^external_cache_codeartifact_token" ~/.gradle/gradle.properties && sed -i "s/^external_cache_codeartifact_token.*/external_cache_codeartifact_token=$CODEARTIFACT_AUTH_TOKEN/" ~/.gradle/gradle.properties || echo "external_cache_codeartifact_token=$CODEARTIFACT_AUTH_TOKEN" >> ~/.gradle/gradle.properties
+grep -q "^external_cache_codeartifact_token" ~/.gradle/gradle.properties && sed -i.bak "s/^external_cache_codeartifact_token.*/external_cache_codeartifact_token=$CODEARTIFACT_AUTH_TOKEN/" ~/.gradle/gradle.properties || echo "external_cache_codeartifact_token=$CODEARTIFACT_AUTH_TOKEN" >> ~/.gradle/gradle.properties
