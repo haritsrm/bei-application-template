@@ -1,5 +1,5 @@
 gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
-rootProject.name = "bei-application-template"
+rootProject.name = "bei-bootcamp"
 
 def includeSubdirectories() {
     def currentDir = rootProject.projectDir;
