@@ -1,0 +1,15 @@
+apply plugin: "com.traveloka.common.gradle.base-library"
+
+dependencies {
+    // Notice the dependencies is only to the api module for contract
+    implementation project(":bootcamp-addition-api")
+    implementation project(":bootcamp-subtraction-api")
+
+    implementation project(":bootcamp-calculator-api")
+
+    // Add provided stubs as test dependencies
+    testImplementation project(":bootcamp-addition-stub")
+    testImplementation project(":bootcamp-subtraction-stub")
+
+    testImplementation "org.testng:testng:6.14.3"
+}

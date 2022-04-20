@@ -1,4 +1,4 @@
-package com.traveloka.bootcamp.addtion.component;
+package com.traveloka.bootcamp.addition.component;
 
 import com.traveloka.bootcamp.addition.component.AdditionComponent;
 import com.traveloka.bootcamp.addition.service.AdditionService;

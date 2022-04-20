@@ -20,7 +20,9 @@ import org.dk.rpc.server.RpcAsyncServletComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@TravelokaApplication(port = 8080, group = "arithmetic")
+@TravelokaApplication(port = 8080, group = "arithmetic", logConfigs = {
+        @LogConfig(applicationEnv = "dev", logDestination = LogDestination.CONSOLE)
+})
 public class ArithmeticServiceComponent extends TopLevelComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(ArithmeticServiceComponent.class);

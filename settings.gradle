@@ -19,4 +19,8 @@ include 'bootcamp-substraction-api'
 include 'bootcamp-substraction-impl'
 include 'bootcamp-subtraction-rpc'
 include 'bootcamp-arithmetic-service'
+include 'bootcamp-calculator-impl'
+include 'bootcamp-addition-stub'
+include 'bootcamp-subtraction-stub'
+include 'bootcamp-calculator-service'
 

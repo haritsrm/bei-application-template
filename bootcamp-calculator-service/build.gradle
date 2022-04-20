@@ -1,0 +1,40 @@
+apply plugin: "com.traveloka.common.gradle.base-application"
+
+mainClassName = "com.traveloka.bootcamp.calculator.CalculatorServiceApplication"
+applicationName = "beicalc"
+
+travelokaApplication {
+    productDomain = "bei"
+    s3BinaryBucket = "ebi-appbin-275451288552-d7be68b27b93c6ed" // tvlk-ebi-dev
+    s3BinaryKey = "${applicationName}/${project.version}.tgz"
+    s3PlaybookBucket = "ebi-appbin-275451288552-d7be68b27b93c6ed" // tvlk-ebi-dev
+    s3PlaybookKey = "${applicationName}/playbook.zip"
+}
+
+dependencies {
+    // Dependencies to the addition and subtraction module
+    // Note, that this modules also depends on the "rpc" module, but not the "impl" module
+    implementation project(":bootcamp-addition-api")
+    implementation project(":bootcamp-addition-rpc")
+    implementation project(":bootcamp-subtraction-api")
+    implementation project(":bootcamp-subtraction-rpc")
+
+    // Dependencies to the calculator module itself
+    implementation project(":bootcamp-calculator-api")
+    implementation project(":bootcamp-calculator-impl")
+
+    implementation "org.slf4j:slf4j-api:1.7.25"
+
+    implementation "com.traveloka.common:concurrent:11.0.38"
+    implementation "com.traveloka.common:online-monitor:11.0.38"
+    implementation "com.traveloka.common:rpc:11.0.38"
+    implementation "com.traveloka.common:lifecycle:11.0.38"
+    implementation "com.traveloka.common:http-client:11.0.38"
+    implementation "com.traveloka.common:application-base:11.0.38"
+    implementation "com.traveloka.common:application-jetty:11.0.38"
+    implementation "com.traveloka.common:groovy:11.0.38"
+    implementation "com.traveloka.common:statsd:11.0.38"
+
+    annotationProcessor "com.traveloka.common:application-jetty-ap:11.0.38"
+    annotationProcessor "com.traveloka.common:lifecycle-ap:11.0.38"
+}
